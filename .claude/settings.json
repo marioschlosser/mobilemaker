@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./scripts/git_ensure_main.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

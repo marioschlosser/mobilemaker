@@ -1,0 +1,52 @@
+# Python (for generate_image.py)
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+*.egg-info/
+
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+*.xcworkspacedata
+xcuserdata/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+.build/
+Packages/
+Package.resolved
+
+# CocoaPods
+Pods/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+/tmp/
+*.tmp
+
+# Local configuration
+.claude/settings.local.json
+.env
+
+# Node (if puppeteer/tooling needed)
+node_modules/
