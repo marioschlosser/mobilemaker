@@ -235,6 +235,7 @@ After research, identify:
 ```bash
 # Create project directory
 mkdir -p {GameName}/{GameName}
+mkdir -p {GameName}/{GameName}/TestHarness
 mkdir -p {GameName}/{GameName}Tests
 mkdir -p {GameName}/assets/{sprites,backgrounds,ui}
 ```
@@ -247,6 +248,8 @@ Create the key files:
 2. **GameViewController.swift** - View controller hosting the scene
 3. **GameModel.swift** - Core game state and logic (separated from rendering)
 4. **AppDelegate.swift** - App lifecycle
+5. **TestHarness/TestableGame.swift** - Protocol for test harness integration (reusable template)
+6. **TestHarness/TestHarnessServer.swift** - HTTP server for automated testing (reusable template)
 
 ### Key Patterns for iOS Games
 
@@ -312,9 +315,57 @@ class NodePool<T: SKNode> {
 }
 ```
 
+### Test Harness Integration (Required for all games)
+
+Every game must include the test harness for automated testing. Copy the reusable template files from an existing game (e.g., LandscapeTapper) or create them fresh:
+
+**TestHarness/TestableGame.swift** — Protocol (wrap entire file in `#if DEBUG`):
+```swift
+protocol TestableGame: AnyObject {
+    func queryState() -> [String: Any]        // Returns score, screen, game-specific state
+    func performTap(at point: CGPoint) -> Bool // Same code path as real touch
+    func performAction(_ name: String, parameters: [String: Any]) -> [String: Any]
+    var availableActions: [[String: Any]] { get }  // Self-describing action catalog
+    var gameName: String { get }
+}
+```
+
+**TestHarness/TestHarnessServer.swift** — HTTP server using NWListener (wrap entire file in `#if DEBUG`):
+- Endpoints: `/ping`, `/state`, `/actions`, `/tap` (POST), `/action` (POST)
+- Listens on port 7483
+- Writes port to `Documents/testharness_port.txt`
+- Every response includes updated game state as JSON
+
+**Wiring** (add to existing files under `#if DEBUG`):
+- `AppDelegate.swift` — Store `TestHarnessServer` property, start it after scene loads
+- `GameViewController.swift` — Expose `gameScene` as `private(set) var` under `#if DEBUG`
+- `GameScene.swift` — Add `extension GameScene: TestableGame` under `#if DEBUG`
+
+**GameScene must expose a `handleTap(at:)` method** (not private) so both real touches and the test harness `performTap` use the same code path.
+
+**CRITICAL: `performAction` handlers must directly manipulate model state, NOT call scene UI methods.** The iOS Simulator can produce phantom touch events that interfere with UI-routed actions. For example:
+
+```swift
+// BAD — routes through scene's UI/touch system, unreliable in tests
+case "select_creature":
+    selectCreatureForMixing(creature)  // Scene method with animations, touch state
+
+// GOOD — sets model state directly, reliable and deterministic
+case "select_creature":
+    if model.headSelection == nil {
+        model.selectHead(creature)
+    } else if model.bodySelection == nil {
+        model.selectBody(creature)
+    }
+```
+
+The `/tap` endpoint can still call `handleTap(at:)` for basic tap stress testing, but all named actions in `performAction` should bypass the scene layer and go straight to the game model.
+
+**Add both TestHarness files to the Xcode project's Sources build phase.**
+
 ### Implementation Checklist
 
-- [ ] Xcode project builds without errors
+- [ ] Xcode project builds without errors (Debug AND Release)
 - [ ] Game scene loads and displays
 - [ ] Touch input responds correctly
 - [ ] Core game loop runs (action -> result -> feedback)
@@ -322,6 +373,8 @@ class NodePool<T: SKNode> {
 - [ ] Game state persists between sessions (UserDefaults or file)
 - [ ] Runs at 60fps on simulator
 - [ ] Works in both iPhone and iPad sizes
+- [ ] Test harness responds to `/ping` on localhost:7483 (Debug builds only)
+- [ ] Release build compiles without any test harness code
 
 ---
 

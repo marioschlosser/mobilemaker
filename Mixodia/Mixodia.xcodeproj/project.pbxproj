@@ -1,0 +1,413 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BB000001 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB100001 /* AppDelegate.swift */; };
+		BB000002 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB100002 /* GameViewController.swift */; };
+		BB000003 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB100003 /* GameScene.swift */; };
+		BB000004 /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB100004 /* GameModel.swift */; };
+		BB000005 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB100005 /* Assets.xcassets */; };
+		BB000010 /* GameModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB100010 /* GameModelTests.swift */; };
+		BB000030 /* TestableGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB100030 /* TestableGame.swift */; };
+		BB000031 /* TestHarnessServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB100031 /* TestHarnessServer.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BB300001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BB400001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BB500001;
+			remoteInfo = Mixodia;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		BB100001 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BB100002 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		BB100003 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		BB100004 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
+		BB100005 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BB100007 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BB100010 /* GameModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModelTests.swift; sourceTree = "<group>"; };
+		BB100030 /* TestableGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestableGame.swift; sourceTree = "<group>"; };
+		BB100031 /* TestHarnessServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHarnessServer.swift; sourceTree = "<group>"; };
+		BB600001 /* Mixodia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mixodia.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB600002 /* MixodiaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MixodiaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BB700001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB700002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BB800001 = {
+			isa = PBXGroup;
+			children = (
+				BB800002 /* Mixodia */,
+				BB800003 /* MixodiaTests */,
+				BB800004 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BB800002 /* Mixodia */ = {
+			isa = PBXGroup;
+			children = (
+				BB100001 /* AppDelegate.swift */,
+				BB100002 /* GameViewController.swift */,
+				BB100003 /* GameScene.swift */,
+				BB100004 /* GameModel.swift */,
+				BB800005 /* TestHarness */,
+				BB100005 /* Assets.xcassets */,
+				BB100007 /* Info.plist */,
+			);
+			path = Mixodia;
+			sourceTree = "<group>";
+		};
+		BB800005 /* TestHarness */ = {
+			isa = PBXGroup;
+			children = (
+				BB100030 /* TestableGame.swift */,
+				BB100031 /* TestHarnessServer.swift */,
+			);
+			path = TestHarness;
+			sourceTree = "<group>";
+		};
+		BB800003 /* MixodiaTests */ = {
+			isa = PBXGroup;
+			children = (
+				BB100010 /* GameModelTests.swift */,
+			);
+			path = MixodiaTests;
+			sourceTree = "<group>";
+		};
+		BB800004 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BB600001 /* Mixodia.app */,
+				BB600002 /* MixodiaTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BB500001 /* Mixodia */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BBB00001 /* Build configuration list for PBXNativeTarget "Mixodia" */;
+			buildPhases = (
+				BB900001 /* Sources */,
+				BB700001 /* Frameworks */,
+				BBA00001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Mixodia;
+			productName = Mixodia;
+			productReference = BB600001 /* Mixodia.app */;
+			productType = "com.apple.product-type.application";
+		};
+		BB500002 /* MixodiaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BBB00002 /* Build configuration list for PBXNativeTarget "MixodiaTests" */;
+			buildPhases = (
+				BB900002 /* Sources */,
+				BB700002 /* Frameworks */,
+				BBA00002 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BB300002 /* PBXTargetDependency */,
+			);
+			name = MixodiaTests;
+			productName = MixodiaTests;
+			productReference = BB600002 /* MixodiaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BB400001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					BB500001 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					BB500002 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = BB500001;
+					};
+				};
+			};
+			buildConfigurationList = BBB00003 /* Build configuration list for PBXProject "Mixodia" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BB800001;
+			productRefGroup = BB800004 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BB500001 /* Mixodia */,
+				BB500002 /* MixodiaTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BBA00001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB000005 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BBA00002 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BB900001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB000001 /* AppDelegate.swift in Sources */,
+				BB000002 /* GameViewController.swift in Sources */,
+				BB000003 /* GameScene.swift in Sources */,
+				BB000004 /* GameModel.swift in Sources */,
+				BB000030 /* TestableGame.swift in Sources */,
+				BB000031 /* TestHarnessServer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB900002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB000010 /* GameModelTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BB300002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BB500001 /* Mixodia */;
+			targetProxy = BB300001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		BBC00001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		BBC00002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BBC00003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Mixodia/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mixodia.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BBC00004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Mixodia/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mixodia.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		BBC00005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mixodia.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mixodia.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Mixodia";
+			};
+			name = Debug;
+		};
+		BBC00006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mixodia.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mixodia.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Mixodia";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BBB00001 /* Build configuration list for PBXNativeTarget "Mixodia" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BBC00003 /* Debug */,
+				BBC00004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BBB00002 /* Build configuration list for PBXNativeTarget "MixodiaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BBC00005 /* Debug */,
+				BBC00006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BBB00003 /* Build configuration list for PBXProject "Mixodia" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BBC00001 /* Debug */,
+				BBC00002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = BB400001 /* Project object */;
+}

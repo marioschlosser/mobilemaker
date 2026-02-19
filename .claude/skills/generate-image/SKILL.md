@@ -1,6 +1,6 @@
 ---
 name: generate-image
-description: Generate game art assets using Gemini 2.5 Flash Image API. Supports sprites, backgrounds, icons, and UI elements with iOS-specific sizes (@2x/@3x).
+description: Generate, edit, and combine game art assets using Gemini 2.5 Flash Image API. Supports sprites, backgrounds, icons, UI elements, multi-image composition, and style transfer with iOS-specific sizes (@2x/@3x).
 ---
 
 # Generate Image Skill
@@ -21,64 +21,94 @@ Generate game art assets on demand using Google's Gemini 2.5 Flash Image API. Cr
 - Generating background art and environments
 - Making app icons and UI elements
 - Editing existing assets to create variants (mood changes, damage states)
+- Combining multiple images (composition, style transfer, element fusion)
 
 ## Commands
 
 ### Generate New Image
 
 ```bash
-python scripts/generate_image.py generate "prompt" output_path.png
+source .venv/bin/activate && python scripts/generate_image.py generate "prompt" output_path.png
 ```
 
 **Examples:**
 ```bash
 # Character sprite with transparent background
-python scripts/generate_image.py generate "A cartoon knight character, side view, pixel art style" assets/sprites/knight.png --transparent
+source .venv/bin/activate && python scripts/generate_image.py generate "A cartoon knight character, side view, pixel art style" assets/sprites/knight.png --transparent
 
 # Game background (16:9 for landscape games)
-python scripts/generate_image.py generate "A fantasy forest scene, vibrant colors, game background" assets/backgrounds/forest.png --aspect-ratio 16:9
+source .venv/bin/activate && python scripts/generate_image.py generate "A fantasy forest scene, vibrant colors, game background" assets/backgrounds/forest.png --aspect-ratio 16:9
 
 # Portrait background (9:16 for portrait games)
-python scripts/generate_image.py generate "A vertical dungeon corridor, dark and atmospheric" assets/backgrounds/dungeon.png --aspect-ratio 9:16
+source .venv/bin/activate && python scripts/generate_image.py generate "A vertical dungeon corridor, dark and atmospheric" assets/backgrounds/dungeon.png --aspect-ratio 9:16
 
 # App icon (square)
-python scripts/generate_image.py generate "App icon for a space shooter game, bold neon colors, minimal" assets/icons/appicon.png
+source .venv/bin/activate && python scripts/generate_image.py generate "App icon for a space shooter game, bold neon colors, minimal" assets/icons/appicon.png
 ```
 
 ### Edit Existing Image
 
 ```bash
-python scripts/generate_image.py edit "prompt" input.png output.png
+source .venv/bin/activate && python scripts/generate_image.py edit "prompt" input.png output.png
 ```
 
 **Examples:**
 ```bash
 # Create damage variant of a character
-python scripts/generate_image.py edit "Add battle damage, torn clothes, scratches" assets/sprites/knight.png assets/sprites/knight_damaged.png
+source .venv/bin/activate && python scripts/generate_image.py edit "Add battle damage, torn clothes, scratches" assets/sprites/knight.png assets/sprites/knight_damaged.png
 
 # Change scene mood
-python scripts/generate_image.py edit "Make the scene nighttime with moonlight" assets/backgrounds/forest.png assets/backgrounds/forest_night.png
+source .venv/bin/activate && python scripts/generate_image.py edit "Make the scene nighttime with moonlight" assets/backgrounds/forest.png assets/backgrounds/forest_night.png
 
 # Remove elements
-python scripts/generate_image.py edit "Remove the clouds, make sky clear blue" assets/backgrounds/sky.png assets/backgrounds/sky_clear.png
+source .venv/bin/activate && python scripts/generate_image.py edit "Remove the clouds, make sky clear blue" assets/backgrounds/sky.png assets/backgrounds/sky_clear.png
+```
+
+### Mix Multiple Images
+
+Combine elements from multiple images into a new image. Supports composition, style transfer, and element fusion. The Gemini API accepts up to 14 reference images (up to 6 high-fidelity objects, up to 5 human references).
+
+```bash
+source .venv/bin/activate && python scripts/generate_image.py mix "prompt" image1.png image2.png ... -o output.png
+```
+
+**Examples:**
+```bash
+# Combine a character with a background
+source .venv/bin/activate && python scripts/generate_image.py mix \
+    "Place the knight character in front of the castle gate" \
+    assets/sprites/knight.png assets/backgrounds/castle.png \
+    -o assets/scenes/knight_at_castle.png
+
+# Style transfer — apply one image's art style to another subject
+source .venv/bin/activate && python scripts/generate_image.py mix \
+    "Redraw the character in the art style of the reference image" \
+    assets/sprites/hero.png assets/references/watercolor_style.png \
+    -o assets/sprites/hero_watercolor.png
+
+# Combine elements from three images
+source .venv/bin/activate && python scripts/generate_image.py mix \
+    "Create a scene with the warrior holding the sword, standing on the cliff" \
+    assets/sprites/warrior.png assets/items/sword.png assets/backgrounds/cliff.png \
+    -o assets/scenes/warrior_cliff.png --aspect-ratio 16:9
 ```
 
 ### Crop Transparent Borders
 
 ```bash
-python scripts/generate_image.py crop image1.png image2.png ...
+source .venv/bin/activate && python scripts/generate_image.py crop image1.png image2.png ...
 ```
 
 **Examples:**
 ```bash
 # Crop a single sprite
-python scripts/generate_image.py crop assets/sprites/knight.png
+source .venv/bin/activate && python scripts/generate_image.py crop assets/sprites/knight.png
 
 # Crop with padding
-python scripts/generate_image.py crop assets/sprites/knight.png --padding 4
+source .venv/bin/activate && python scripts/generate_image.py crop assets/sprites/knight.png --padding 4
 
 # Crop all sprites
-python scripts/generate_image.py crop assets/sprites/*.png
+source .venv/bin/activate && python scripts/generate_image.py crop assets/sprites/*.png
 ```
 
 ## Parameters
@@ -88,7 +118,7 @@ python scripts/generate_image.py crop assets/sprites/*.png
 |-----------|----------|-------------|
 | prompt | Yes | Text description of the image to generate |
 | output | Yes | Path to save the generated image |
-| --aspect-ratio, -a | No | Aspect ratio (default: 1:1). Options: 1:1, 16:9, 9:16, 4:3, 3:4 |
+| --aspect-ratio, -a | No | Aspect ratio (default: 1:1). Options: 1:1, 3:2, 2:3, 4:3, 3:4, 4:5, 5:4, 16:9, 9:16, 21:9 |
 | --transparent, -t | No | Generate with transparent background (for sprites/icons) |
 
 ### Edit Command
@@ -97,6 +127,14 @@ python scripts/generate_image.py crop assets/sprites/*.png
 | prompt | Yes | Text description of the edit to make |
 | input | Yes | Path to the input image |
 | output | Yes | Path to save the edited image |
+
+### Mix Command
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| prompt | Yes | Text description of how to combine the images |
+| inputs | Yes | 1-14 input image paths |
+| -o, --output | Yes | Path to save the combined image |
+| --aspect-ratio, -a | No | Aspect ratio (default: 1:1). Options: 1:1, 3:2, 2:3, 4:3, 3:4, 4:5, 5:4, 16:9, 9:16, 21:9 |
 
 ### Crop Command
 | Parameter | Required | Description |
@@ -170,22 +208,22 @@ The `edit` command creates consistent character variations (moods, damage states
 REF=assets/sprites/hero.png
 
 # Idle state (reference)
-python scripts/generate_image.py generate \
+source .venv/bin/activate && python scripts/generate_image.py generate \
     "A cartoon hero character, standing pose, pixel art, side view" \
     $REF --transparent
 
 # Attack state
-python scripts/generate_image.py edit \
+source .venv/bin/activate && python scripts/generate_image.py edit \
     "Change ONLY the pose to attacking with a sword swing. Same character, same art style, same colors." \
     $REF assets/sprites/hero_attack.png
 
 # Damaged state
-python scripts/generate_image.py edit \
+source .venv/bin/activate && python scripts/generate_image.py edit \
     "Add battle damage, scratches, torn clothes. Same character, same art style, same pose." \
     $REF assets/sprites/hero_damaged.png
 
 # Power-up state
-python scripts/generate_image.py edit \
+source .venv/bin/activate && python scripts/generate_image.py edit \
     "Add a glowing golden aura around the character. Same character, same pose, same style." \
     $REF assets/sprites/hero_powered.png
 ```
@@ -195,6 +233,53 @@ python scripts/generate_image.py edit \
 - Be explicit about what stays the same (style, colors, proportions)
 - Describe changes in physical terms
 - Run variants in parallel (independent operations)
+
+## Combining Multiple Images with Mix
+
+The `mix` command lets you compose new images from multiple references. This is useful for scene assembly, style transfer, and creating variations that draw from several source assets.
+
+### Composition: Placing Elements Together
+
+Combine separate sprites or assets into a single scene:
+
+```bash
+source .venv/bin/activate && python scripts/generate_image.py mix \
+    "Create a battle scene with the knight fighting the dragon in the forest clearing" \
+    assets/sprites/knight.png assets/sprites/dragon.png assets/backgrounds/forest.png \
+    -o assets/scenes/battle.png --aspect-ratio 16:9
+```
+
+### Style Transfer: Applying Art Styles
+
+Use one image as a style reference to restyle another:
+
+```bash
+# Apply watercolor style to a character
+source .venv/bin/activate && python scripts/generate_image.py mix \
+    "Redraw this character in the art style of the reference painting. Keep the character's pose and features identical." \
+    assets/sprites/hero.png assets/references/watercolor_sample.png \
+    -o assets/sprites/hero_watercolor.png
+
+# Match an existing game's art direction
+source .venv/bin/activate && python scripts/generate_image.py mix \
+    "Create a new enemy character in the same art style as the reference character" \
+    assets/references/style_guide.png \
+    -o assets/sprites/new_enemy.png
+```
+
+### Limits
+
+- Up to **14 total** reference images per call
+- Up to **6 high-fidelity object** images
+- Up to **5 human reference** images
+- Output aspect ratio follows the `--aspect-ratio` flag; when omitted, defaults to 1:1
+
+### Tips for Multi-Image Prompts
+
+- List what role each image plays: "Using the character from the first image and the background from the second..."
+- Be explicit about what to keep and what to change
+- For style transfer, emphasize "same art style" and describe what should carry over (colors, linework, shading)
+- Simpler compositions (2-3 images) produce more reliable results than complex ones
 
 ## Prompt Tips
 
@@ -230,5 +315,5 @@ export GEMINI_API_KEY="your-api-key-here"
 
 ### "google-genai package not installed"
 ```bash
-pip install google-genai Pillow
+source .venv/bin/activate && pip install google-genai Pillow
 ```

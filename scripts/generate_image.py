@@ -179,7 +179,10 @@ def generate_image(
             model=model,
             contents=prompt,
             config=types.GenerateContentConfig(
-                response_modalities=["TEXT", "IMAGE"]
+                response_modalities=["TEXT", "IMAGE"],
+                image_config=types.ImageConfig(
+                    aspect_ratio=aspect_ratio
+                )
             )
         )
 
@@ -337,6 +340,124 @@ def edit_image(
         }
 
 
+def mix_images(
+    prompt: str,
+    input_paths: list,
+    output_path: str,
+    aspect_ratio: str = "1:1",
+    model: str = "gemini-2.5-flash-image"
+) -> dict:
+    """
+    Combine multiple input images into a new image using Gemini 2.5 Flash Image.
+
+    Supports composition (combining elements from different images), style
+    transfer (applying the style of one image to a subject), and more.
+
+    Args:
+        prompt: Text description of how to combine the images
+        input_paths: List of paths to input images (up to 14)
+        output_path: Path to save the resulting image
+        aspect_ratio: Aspect ratio for the output (1:1, 16:9, 9:16, etc.)
+        model: Model to use for generation
+
+    Returns:
+        dict with keys: success, path, text_response, error
+    """
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        return {
+            "success": False,
+            "error": "GEMINI_API_KEY environment variable not set"
+        }
+
+    if len(input_paths) < 1:
+        return {"success": False, "error": "At least one input image is required"}
+    if len(input_paths) > 14:
+        return {"success": False, "error": "Maximum 14 input images supported"}
+
+    # Verify all input files exist
+    for p in input_paths:
+        if not Path(p).exists():
+            return {"success": False, "error": f"Input file not found: {p}"}
+
+    try:
+        client = genai.Client(api_key=api_key)
+
+        # Build contents: images first, then text prompt
+        contents = []
+        mime_types = {
+            '.png': 'image/png',
+            '.jpg': 'image/jpeg',
+            '.jpeg': 'image/jpeg',
+            '.gif': 'image/gif',
+            '.webp': 'image/webp'
+        }
+
+        for img_path in input_paths:
+            img_file = Path(img_path)
+            image_data = img_file.read_bytes()
+            image_base64 = base64.b64encode(image_data).decode('utf-8')
+            suffix = img_file.suffix.lower()
+            mime_type = mime_types.get(suffix, 'image/png')
+            contents.append(types.Part(
+                inline_data=types.Blob(
+                    mime_type=mime_type,
+                    data=image_base64
+                )
+            ))
+
+        contents.append(prompt)
+
+        response = client.models.generate_content(
+            model=model,
+            contents=contents,
+            config=types.GenerateContentConfig(
+                response_modalities=["TEXT", "IMAGE"],
+                image_config=types.ImageConfig(
+                    aspect_ratio=aspect_ratio
+                )
+            )
+        )
+
+        # Process response parts
+        text_response = None
+        image_saved = False
+
+        for part in response.candidates[0].content.parts:
+            if hasattr(part, 'text') and part.text:
+                text_response = part.text
+            elif hasattr(part, 'inline_data') and part.inline_data:
+                raw_data = part.inline_data.data
+                if isinstance(raw_data, str):
+                    output_data = base64.b64decode(raw_data)
+                else:
+                    output_data = raw_data
+                output_file = Path(output_path)
+                output_file.parent.mkdir(parents=True, exist_ok=True)
+                output_file.write_bytes(output_data)
+                image_saved = True
+                print(f"Mixed image saved to: {output_path}")
+
+        if image_saved:
+            return {
+                "success": True,
+                "path": str(output_path),
+                "text_response": text_response
+            }
+        else:
+            return {
+                "success": False,
+                "error": "No image was generated in the response",
+                "text_response": text_response
+            }
+
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e)
+        }
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Generate images using Gemini 2.5 Flash Image API"
@@ -380,6 +501,22 @@ def main():
     edit_parser.add_argument("input", help="Input image path")
     edit_parser.add_argument("output", help="Output path for the edited image")
     edit_parser.add_argument(
+        "--model", "-m",
+        default="gemini-2.5-flash-image",
+        help="Model to use"
+    )
+
+    # Mix command
+    mix_parser = subparsers.add_parser("mix", help="Combine multiple images into a new image")
+    mix_parser.add_argument("prompt", help="Text description of how to combine the images")
+    mix_parser.add_argument("inputs", nargs="+", help="Input image paths (2-14 images)")
+    mix_parser.add_argument("-o", "--output", required=True, help="Output path for the combined image")
+    mix_parser.add_argument(
+        "--aspect-ratio", "-a",
+        default="1:1",
+        help="Aspect ratio (1:1, 16:9, 9:16, 4:3, 3:4, etc.)"
+    )
+    mix_parser.add_argument(
         "--model", "-m",
         default="gemini-2.5-flash-image",
         help="Model to use"
@@ -441,6 +578,23 @@ def main():
 
         if result["success"]:
             print(f"Success! Edited image saved to: {result['path']}")
+            if result.get("text_response"):
+                print(f"Model response: {result['text_response']}")
+        else:
+            print(f"Error: {result['error']}")
+            sys.exit(1)
+
+    elif args.command == "mix":
+        result = mix_images(
+            args.prompt,
+            args.inputs,
+            args.output,
+            args.aspect_ratio,
+            args.model
+        )
+
+        if result["success"]:
+            print(f"Success! Mixed image saved to: {result['path']}")
             if result.get("text_response"):
                 print(f"Model response: {result['text_response']}")
         else:
